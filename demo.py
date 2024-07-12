@@ -4,8 +4,12 @@ from scipy.ndimage import convolve
 import matplotlib.pyplot as plt
 from hw3_helper_utils import create_motion_blur_filter
 from wiener_filtering import *
+
 def main():
-    # Path to the image inside the subfolder - CHANGE IF NEEDED
+    # Parameters configuration - CHANGE IF NEEDED
+    noise_level = 0.02
+    length = 20
+    angle = 30
     image_path = 'D:/Σχολή/8ο εξάμηνο/Ψηφιακή Επεξεργασία Εικόνας/hw3/'
     image_name = 'cameraman'
     
@@ -17,11 +21,6 @@ def main():
     x = np.array(img).astype(float)
     if np.any(x > 1.0):
         x *= 1/255
-
-    # Parameters configuration
-    noise_level = 0.02
-    length = 20
-    angle = 30
 
     # Zero Padding Handling 
     M, N = x.shape
@@ -43,8 +42,8 @@ def main():
     x_inv0 = inverse_filtering(y0, h)
     
     # K optimization
-    K_values = np.linspace(1, 100, 1000) 
-    best_K = find_best_K(y, h, K_values, image_path)
+    K_values = np.linspace(1, 500, 1000) 
+    best_K = find_best_K(x_inv0, y, h, K_values, image_path)
     print(f"Best K value found: {best_K:.2f}")
 
     # Optimal Wiener Filter
